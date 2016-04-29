@@ -76,12 +76,12 @@ public:
 
 WApplication* createApplication(const WEnvironment &env) {
 	WApplication* tmp = new ControlExample(env);
-	tmp->styleSheet().addRule(“#header”, “background-color: #262626; color: #fff; padding: 0.1em 0.5em;”);
-	tmp->styleSheet().addRule(“#content”, “display: inline-block; width: 65%; padding: 0.5em;”);
-	tmp->styleSheet().addRule(“#sidebar”, “display: inline-block; width: 30%; padding: 0.5em;”);
-	tmp->styleSheet().addRule(“#footer”, “background-color: #262626; color: #fff; padding: 0.5em;”);
-	tmp->styleSheet().addRule(“BODY”, “background-color: #F0F8FF;”);
-    return new ControlExample(env);
+	tmp->styleSheet().addRule("#header", "background-color: #262626; color: #fff; padding: 0.1em 0.5em;");
+	tmp->styleSheet().addRule("#content", "display: inline-block; width: 65%; padding: 0.5em;");
+	tmp->styleSheet().addRule("#sidebar", "display: inline-block; width: 30%; padding: 0.5em;");
+	tmp->styleSheet().addRule("#footer", "background-color: #262626; color: #fff; padding: 0.5em;");
+	tmp->styleSheet().addRule("BODY", "background-color: #F0F8FF;");
+    return tmp;
 }
 
 int main(int argc, char** argv) {
