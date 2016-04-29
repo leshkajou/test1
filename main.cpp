@@ -3,6 +3,8 @@
 #include <Wt/WContainerWidget>
 #include <Wt/WLink>
 #include <Wt/WText>
+#include <Wt/WImage>
+
 //HEY!
 using namespace Wt;
 
@@ -64,7 +66,25 @@ public:
         WText *t = new WText("<strong>Home</strong> content and a link to <a href='#/page1'>page1</a>");
         t->setInternalPathEncoding(true);
         content()->addWidget(t);
+		
 
+		WContainerWidget *container = new Wt::WContainerWidget();
+
+		WImage *image = new Wt::WImage(Wt::WLink("1.jpg"),
+                                   container);
+		image->setAlternateText("Wt logo");
+
+		WText *out = new Wt::WText(container);
+		out->setMargin(10, Wt::Left);
+
+		image->clicked().connect(std::bind([=] (const Wt::WMouseEvent& e) {
+			out->setText("You clicked the Wt logo at "
+			"(" + boost::lexical_cast<std::string>(e.widget().x) +
+			"," + boost::lexical_cast<std::string>(e.widget().y) +
+			").");
+		}, std::placeholders::_1));
+		
+		content()->addWidget(container);
     }
 
     void page1() {
