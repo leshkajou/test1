@@ -4,6 +4,8 @@
 #include <Wt/WLink>
 #include <Wt/WText>
 #include <Wt/WImage>
+#include <Wt/WHBoxLayout>
+
 
 //HEY!
 using namespace Wt;
@@ -68,23 +70,21 @@ public:
         content()->addWidget(t);
 		
 
-		WContainerWidget *container = new Wt::WContainerWidget();
-
-		WImage *image = new Wt::WImage(Wt::WLink("1.jpg"),
-                                   container);
-		image->setAlternateText("Wt logo");
-
-		WText *out = new Wt::WText(container);
-		out->setMargin(10, Wt::Left);
-
-		image->clicked().connect(std::bind([=] (const Wt::WMouseEvent& e) {
-			out->setText("You clicked the Wt logo at "
-			"(" + boost::lexical_cast<std::string>(e.widget().x) +
-			"," + boost::lexical_cast<std::string>(e.widget().y) +
-			").");
-		}, std::placeholders::_1));
 		
-		content()->addWidget(container);
+
+		Wt::WContainerWidget *container = new Wt::WContainerWidget();
+		container->setStyleClass("yellow-box");
+
+		Wt::WHBoxLayout *hbox = new Wt::WHBoxLayout();
+		container->setLayout(hbox);
+
+		Wt::WText *item = new Wt::WText("Item 1");
+		item->setStyleClass("green-box");
+		hbox->addWidget(item, 1);
+  
+		item = new Wt::WText("Item 2");
+		item->setStyleClass("blue-box");
+		hbox->addWidget(item);
     }
 
     void page1() {
