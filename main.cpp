@@ -72,7 +72,7 @@ public:
     void header() {
         WContainerWidget* header = new WContainerWidget(root());
         header->setId("header");
-        header->addWidget(new WText("<h3>" + appName + "</h3>"));
+        header->addWidget(new WText("<h1>" + align="centre" + appName + "</h1>"));
     }
 
     void sidebar() {
@@ -98,7 +98,7 @@ public:
 
 		WTable *table = new Wt::WTable();
 		table->setHeaderCount(1);
-		table->setWidth(Wt::WLength("100%"));//
+		table->setWidth(Wt::WLength("100%"));
 
 		table->elementAt(0, 0)->addWidget(new Wt::WText("#"));
 		table->elementAt(0, 1)->addWidget(new Wt::WText("First Name"));
