@@ -12,6 +12,26 @@
 
 //HEY!
 using namespace Wt;
+namespace {
+    struct Employee {
+	std::string firstName;
+	std::string lastName;
+	double pay;
+
+        Employee(const std::string& aFirstName, 
+		 const std::string& aLastName,
+		 double aPay)
+	  : firstName(aFirstName),
+	    lastName(aLastName),
+	    pay(aPay) { }
+    };
+
+    Employee employees[] = {
+      Employee("Mark", "Otto", 100),
+      Employee("Jacob", "Thornton", 50),
+      Employee("Larry the Bird", "", 10)
+    };
+}
 
 class ControlExample: public WApplication {
 private:
@@ -20,7 +40,7 @@ private:
 
 public:
     ControlExample(const WEnvironment &env): WApplication(env) {
-        appName = "Application Name";
+        appName = "RateYourBook";
         setTitle(appName);
         _content = 0;
         internalPathChanged().connect(this, &ControlExample::onInternalPathChange);
@@ -52,7 +72,7 @@ public:
     void header() {
         WContainerWidget* header = new WContainerWidget(root());
         header->setId("header");
-        header->addWidget(new WText("<h1>" + appName + "</h1>"));
+        header->addWidget(new WText("<h2>" + appName + "</h2>"));
     }
 
     void sidebar() {
@@ -74,49 +94,30 @@ public:
 		
 		
 
-	namespace {
-    struct Employee {
-	std::string firstName;
-	std::string lastName;
-	double pay;
+	
 
-        Employee(const std::string& aFirstName, 
-		 const std::string& aLastName,
-		 double aPay)
-	  : firstName(aFirstName),
-	    lastName(aLastName),
-	    pay(aPay) { }
-    };
+		WTable *table = new Wt::WTable();
+		table->setHeaderCount(1);
+		table->setWidth(Wt::WLength("100%"));
 
-    Employee employees[] = {
-      Employee("Mark", "Otto", 100),
-      Employee("Jacob", "Thornton", 50),
-      Employee("Larry the Bird", "", 10)
-    };
-}
+		table->elementAt(0, 0)->addWidget(new Wt::WText("#"));
+		table->elementAt(0, 1)->addWidget(new Wt::WText("First Name"));
+		table->elementAt(0, 2)->addWidget(new Wt::WText("Last Name"));
+		table->elementAt(0, 3)->addWidget(new Wt::WText("Pay"));
 
-Wt::WTable *table = new Wt::WTable();
-table->setHeaderCount(1);
-table->setWidth(Wt::WLength("100%"));
+	for (unsigned i = 0; i < 3; ++i) {
+		Employee& employee = employees[i];
+		int row = i + 1;
 
-table->elementAt(0, 0)->addWidget(new Wt::WText("#"));
-table->elementAt(0, 1)->addWidget(new Wt::WText("First Name"));
-table->elementAt(0, 2)->addWidget(new Wt::WText("Last Name"));
-table->elementAt(0, 3)->addWidget(new Wt::WText("Pay"));
-
-for (unsigned i = 0; i < 3; ++i) {
-    Employee& employee = employees[i];
-    int row = i + 1;
-
-    table->elementAt(row, 0)
-        ->addWidget(new Wt::WText(Wt::WString::fromUTF8("{1}")
+		table->elementAt(row, 0)
+			->addWidget(new Wt::WText(Wt::WString::fromUTF8("{1}")
 				  .arg(row)));
-    table->elementAt(row, 1)
-        ->addWidget(new Wt::WText(employee.firstName));
-    table->elementAt(row, 2)
-        ->addWidget(new Wt::WText(employee.lastName));
-    table->elementAt(row, 3)
-        ->addWidget(new Wt::WLineEdit(Wt::WString::fromUTF8("{1}")
+		table->elementAt(row, 1)
+			->addWidget(new Wt::WText(employee.firstName));
+		table->elementAt(row, 2)
+			->addWidget(new Wt::WText(employee.lastName));
+		table->elementAt(row, 3)
+			->addWidget(new Wt::WLineEdit(Wt::WString::fromUTF8("{1}")
 				      .arg(employee.pay)));
 }
 
