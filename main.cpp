@@ -72,7 +72,7 @@ public:
     void header() {
         WContainerWidget* header = new WContainerWidget(root());
         header->setId("header");
-        header->addWidget(new WText("<h2>" + appName + "</h2>"));
+        header->addWidget(new WText("<h3>" + appName + "</h3>"));
     }
 
     void sidebar() {
