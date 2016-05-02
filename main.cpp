@@ -5,6 +5,9 @@
 #include <Wt/WText>
 #include <Wt/WImage>
 #include <Wt/WHBoxLayout>
+#include <Wt/WTable>
+#include <Wt/WTableCell>
+#include <Wt/WLineEdit>
 
 
 //HEY!
@@ -71,69 +74,53 @@ public:
 		
 		
 
-		Wt::WContainerWidget *container = new Wt::WContainerWidget();
+	namespace {
+    struct Employee {
+	std::string firstName;
+	std::string lastName;
+	double pay;
 
-		// Create a navigation bar with a link to a web page.
-		Wt::WNavigationBar *navigation = new Wt::WNavigationBar(container);
-		navigation->setTitle("Corpy Inc.",
-		     "http://www.google.com/search?q=corpy+inc");
-		navigation->setResponsive(true);
+        Employee(const std::string& aFirstName, 
+		 const std::string& aLastName,
+		 double aPay)
+	  : firstName(aFirstName),
+	    lastName(aLastName),
+	    pay(aPay) { }
+    };
 
-		Wt::WStackedWidget *contentsStack = new Wt::WStackedWidget(container);
-		contentsStack->addStyleClass("contents");
+    Employee employees[] = {
+      Employee("Mark", "Otto", 100),
+      Employee("Jacob", "Thornton", 50),
+      Employee("Larry the Bird", "", 10)
+    };
+}
 
-		// Setup a Left-aligned menu.
-		Wt::WMenu *leftMenu = new Wt::WMenu(contentsStack, container);
-		navigation->addMenu(leftMenu);
+Wt::WTable *table = new Wt::WTable();
+table->setHeaderCount(1);
+table->setWidth(Wt::WLength("100%"));
 
-		Wt::WText *searchResult = new Wt::WText("Buy or Sell... Bye!");
+table->elementAt(0, 0)->addWidget(new Wt::WText("#"));
+table->elementAt(0, 1)->addWidget(new Wt::WText("First Name"));
+table->elementAt(0, 2)->addWidget(new Wt::WText("Last Name"));
+table->elementAt(0, 3)->addWidget(new Wt::WText("Pay"));
 
-		leftMenu->addItem("Home", new Wt::WText("There is no better place!"));
-		leftMenu->addItem("Layout", new Wt::WText("Layout contents")) //
-		leftMenu->setLink(Wt::WLink(Wt::WLink::InternalPath, "/layout"));
-		leftMenu->addItem("Sales", searchResult);
+for (unsigned i = 0; i < 3; ++i) {
+    Employee& employee = employees[i];
+    int row = i + 1;
 
-		// Setup a Right-aligned menu.
-		Wt::WMenu *rightMenu = new Wt::WMenu();
-		navigation->addMenu(rightMenu, Wt::AlignRight);
+    table->elementAt(row, 0)
+        ->addWidget(new Wt::WText(Wt::WString::fromUTF8("{1}")
+				  .arg(row)));
+    table->elementAt(row, 1)
+        ->addWidget(new Wt::WText(employee.firstName));
+    table->elementAt(row, 2)
+        ->addWidget(new Wt::WText(employee.lastName));
+    table->elementAt(row, 3)
+        ->addWidget(new Wt::WLineEdit(Wt::WString::fromUTF8("{1}")
+				      .arg(employee.pay)));
+}
 
-		// Create a popup submenu for the Help menu.
-		Wt::WPopupMenu *popup = new Wt::WPopupMenu();
-		popup->addItem("Contents");
-		popup->addItem("Index");
-		popup->addSeparator();
-		popup->addItem("About");
-
-		popup->itemSelected().connect(std::bind([=] (Wt::WMenuItem *item) {
-		Wt::WMessageBox *messageBox = new Wt::WMessageBox
-		("Help",
-		Wt::WString::fromUTF8("<p>Showing Help: {1}</p>").arg(item->text()),
-		Wt::Information, Wt::Ok);
-
-		messageBox->buttonClicked().connect(std::bind([=] () {
-		delete messageBox;
-    }));
-
-    messageBox->show();
-}, std::placeholders::_1));
-
-Wt::WMenuItem *item = new Wt::WMenuItem("Help");
-item->setMenu(popup);
-rightMenu->addItem(item);
-
-// Add a Search control.
-Wt::WLineEdit *edit = new Wt::WLineEdit();
-edit->setEmptyText("Enter a search item");
-
-edit->enterPressed().connect(std::bind([=] () {
-    leftMenu->select(2); // is the index of the "Sales"
-    searchResult->setText(Wt::WString("Nothing found for {1}.")
-			  .arg(edit->text()));
-}));
-
-navigation->addSearch(edit, Wt::AlignRight);
-
-container->addWidget(contentsStack);
+		
 		
 
 		
