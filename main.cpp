@@ -17,7 +17,8 @@
 #include <Wt/WVBoxLayout>
 #include <Wt/Dbo/Dbo>
 #include <string>
-
+#include "BestBook.h"
+#include <Wt/Dbo/backend/Sqlite3>
 
 //HEY!
 using namespace Wt;
