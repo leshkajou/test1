@@ -22,26 +22,7 @@
 //HEY!
 using namespace Wt;
 namespace dbo = Wt::Dbo;
-namespace {
-    struct BestBook {
-	std::string bookName;
-	std::string authorName;
-	std::string markBook;
 
-        BestBook(const std::string& abook, 
-		 const std::string& aauthor,
-		 const std::string& amark)
-	  : bookName(abook),
-	    authorName(aauthor),
-	    markBook(amark) { }
-    };
-
-    BestBook books[] = {
-      BestBook("Ken Kizi ", "One Flew Over the Cuckoo's Nest ", "10"),
-      BestBook("Lev Tolstoy ", "War and peace ", "9.5"),
-      BestBook("Anton Chehov ", "Krizhovnic ", "9")
-    };
-}
 
 class ControlExample: public WApplication {
 private:
@@ -166,18 +147,9 @@ public:
 	table->elementAt(0, 3)->addWidget(new WText("Mark"));
 	
 
-	for (unsigned i = 0; i < 3; ++i) {
-    	BestBook& book = books[i];
-    	int row = i + 1;
 
-    new WText(WString::fromUTF8("{1}").arg(row),
-		  table->elementAt(row, 0));
-    new WText(book.bookName, table->elementAt(row, 1));
-    new WText(book.authorName, table->elementAt(row, 2));
-    new WText(book.markBook, table->elementAt(row, 3));  
-}
 	dbo::ptr<BestBook> joe = session.find<BestBook>().where("name = ?").bind("Joe");
-	new WText(joe->karma, table->elementAt(4, 1));
+	new WText(joe->karma, table->elementAt(1, 0));
 table->addStyleClass("table form-inline");
 
 
