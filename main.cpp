@@ -15,10 +15,13 @@
 #include <Wt/WGroupBox>
 #include <Wt/WText>
 #include <Wt/WVBoxLayout>
+#include <Wt/Dbo/Dbo>
+#include <string>
 
 
 //HEY!
 using namespace Wt;
+namespace dbo = Wt::Dbo;
 namespace {
     struct BestBook {
 	std::string bookName;
@@ -44,6 +47,8 @@ class ControlExample: public WApplication {
 private:
     std::string appName;
     WContainerWidget* _content;
+	dbo::backend::Sqlite3 sqlite3("blog.db");
+    dbo::Session session;
 
 public:
     ControlExample(const WEnvironment &env): WApplication(env) {
@@ -51,7 +56,21 @@ public:
         setTitle(appName);
         _content = 0;
         internalPathChanged().connect(this, &ControlExample::onInternalPathChange);
+		
+		session.setConnection(sqlite3);
+		session.mapClass<BestBook>("BestBook");
+		session.createTables();
+		dbo::Transaction transaction(session);
 
+		BestBook *user = new BestBook();
+		user->name = "Joe";
+		user->password = "Secret";
+		user->role = BestBook::Visitor;
+		user->karma = 13;
+
+		dbo::ptr<BestBook> userPtr = session.add(user);
+
+		transaction.commit();
         header();
         home();
         sidebar();
@@ -155,10 +174,10 @@ public:
 		  table->elementAt(row, 0));
     new WText(book.bookName, table->elementAt(row, 1));
     new WText(book.authorName, table->elementAt(row, 2));
-    new WText(book.markBook, table->elementAt(row, 3));
-   
+    new WText(book.markBook, table->elementAt(row, 3));  
 }
-
+	dbo::ptr<BestBook> joe = session.find<BestBook>().where("name = ?").bind("Joe");
+	new WText(joe->karma, table->elementAt(4, 1));
 table->addStyleClass("table form-inline");
 
 
