@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/user/ws/test1/main.cpp
+Wt/WAnchor
+-
+Wt/WApplication
+-
+Wt/WContainerWidget
+-
+Wt/WLink
+-
+Wt/WText
+-
+Wt/WImage
+-
+Wt/WHBoxLayout
+-
+Wt/WTable
+-
+Wt/WTableCell
+-
+Wt/WLineEdit
+-
+Wt/WBreak
+-
+Wt/WMenu
+-
+Wt/WStackedWidget
+-
+Wt/WTextArea
+-
+Wt/WGroupBox
+-
+Wt/WText
+-
+Wt/WVBoxLayout
+-
+

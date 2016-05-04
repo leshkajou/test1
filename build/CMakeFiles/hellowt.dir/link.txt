@@ -1,0 +1,1 @@
+/usr/bin/c++      CMakeFiles/hellowt.dir/main.cpp.o  -o hellowt -rdynamic -lboost_system -lboost_thread -lboost_signals -lwt -lwthttp 
