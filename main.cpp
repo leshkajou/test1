@@ -17,20 +17,21 @@
 #include <Wt/WVBoxLayout>
 #include <Wt/Dbo/Dbo>
 #include <string>
-#include "BestBook.h"
+#include "bestbook.h"
 #include <Wt/Dbo/backend/Sqlite3>
 
 //HEY!
 using namespace Wt;
-namespace dbo = Wt::Dbo;
 
 
 class ControlExample: public WApplication {
 private:
     std::string appName;
     WContainerWidget* _content;
-	dbo::backend::Sqlite3 sqlite3("blog.db");
-    dbo::Session session;
+	
+	
+	//Wt::Dbo::backend::Sqlite3 sqlite3;
+    Dbo::Session session;
 
 public:
     ControlExample(const WEnvironment &env): WApplication(env) {
@@ -38,21 +39,10 @@ public:
         setTitle(appName);
         _content = 0;
         internalPathChanged().connect(this, &ControlExample::onInternalPathChange);
-		
-		session.setConnection(sqlite3);
+		Dbo::backend::Sqlite3 DataBase=WApplication::instance()->appRoot() + "myapp.db";
+		session.setConnection(DataBase);
 		session.mapClass<BestBook>("BestBook");
-		session.createTables();
-		dbo::Transaction transaction(session);
-
-		BestBook *user = new BestBook();
-		user->name = "Joe";
-		user->password = "Secret";
-		user->role = BestBook::Visitor;
-		user->karma = 13;
-
-		dbo::ptr<BestBook> userPtr = session.add(user);
-
-		transaction.commit();
+		Dbo::Transaction transaction(session);
         header();
         home();
         sidebar();
@@ -148,9 +138,11 @@ public:
 	table->elementAt(0, 3)->addWidget(new WText("Mark"));
 	
 
-
-	dbo::ptr<BestBook> joe = session.find<BestBook>().where("name = ?").bind("Joe");
-	new WText(joe->karma, table->elementAt(1, 0));
+	Dbo::Transaction transaction(session);
+	Dbo::ptr<BestBook> joe = session.find<BestBook>().where("name = ?").bind("Joe");
+	transaction.commit();	
+	new WText(joe->password, table->elementAt(1, 0));
+	
 table->addStyleClass("table form-inline");
 
 
