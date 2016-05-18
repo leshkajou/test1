@@ -66,7 +66,7 @@ public:
             page1();
         }
     }
-
+/* CREATING HEADER */
     void header() {
         WContainerWidget* header = new WContainerWidget(root());
         header->setId("header");
@@ -74,88 +74,85 @@ public:
         header->addWidget(new WText("<h1>"  + appName + "</h1>")); 
 	
     }
-
+/* CREATING SIDEBAR MENU */
     void sidebar() {
         WContainerWidget* sidebar = new WContainerWidget(root());
         sidebar->setId("sidebar");
         sidebar->addWidget(new WText("Sidebar Menu"));
 //##### SideBarMenu
-	WGroupBox *groupBox = new Wt::WGroupBox();
-	groupBox->addStyleClass("centered-example");
+		WGroupBox *groupBox = new Wt::WGroupBox();
+		groupBox->addStyleClass("centered-example");
 //
-	WText *authors = new WText("<a href='#/page1'><strong>authors</strong></a><br /><br />");
-	authors->setInternalPathEncoding(true);
-	groupBox->addWidget(authors);
+		WText *authors = new WText("<a href='#/page1'><strong>authors</strong></a><br /><br />");
+			authors->setInternalPathEncoding(true);
+			groupBox->addWidget(authors);
 //
-	WText *types = new WText("<a href='#/page1'><strong>types of books</strong></a><br /><br />");
-	types->setInternalPathEncoding(true);
-	groupBox->addWidget(types);
+		WText *types = new WText("<a href='#/page1'><strong>types of books</strong></a><br /><br />");
+			types->setInternalPathEncoding(true);
+			groupBox->addWidget(types);
 //
-	WText *rates = new WText("<a href='#/page1'><strong>rates</strong></a><br /><br />");
-	rates->setInternalPathEncoding(true);
-	groupBox->addWidget(rates);
+		WText *rates = new WText("<a href='#/page1'><strong>rates</strong></a><br /><br />");
+			rates->setInternalPathEncoding(true);
+			groupBox->addWidget(rates);
 //
-	WText *newbook = new WText("<a href='#/page1'><strong>add new book</strong></a><br /><br />");
-	newbook->setInternalPathEncoding(true);
-	groupBox->addWidget(newbook);
+		WText *newbook = new WText("<a href='#/page1'><strong>add new book</strong></a><br /><br />");
+			newbook->setInternalPathEncoding(true);
+			groupBox->addWidget(newbook);
 //
-	WText *series = new WText("<a href='#/page1'><strong>series and cycles</strong></a><br /><br />");
-	series->setInternalPathEncoding(true);
-	groupBox->addWidget(series);
+		WText *series = new WText("<a href='#/page1'><strong>series and cycles</strong></a><br /><br />");
+			series->setInternalPathEncoding(true);
+			groupBox->addWidget(series);
 //
-	WText *reviews = new WText("<a href='#/page1'><strong>wait for reviews</strong></a><br /><br />");
-	reviews->setInternalPathEncoding(true);
-	groupBox->addWidget(reviews);
+		WText *reviews = new WText("<a href='#/page1'><strong>wait for reviews</strong></a><br /><br />");
+			reviews->setInternalPathEncoding(true);
+			groupBox->addWidget(reviews);
 //
-	WText *newauthor = new WText("<a href='#/page1'><strong>add new author</strong></a><br /><br />");
-	newauthor->setInternalPathEncoding(true);
-	groupBox->addWidget(newauthor);
+		WText *newauthor = new WText("<a href='#/page1'><strong>add new author</strong></a><br /><br />");
+			newauthor->setInternalPathEncoding(true);
+			groupBox->addWidget(newauthor);
 //
-	sidebar->addWidget(groupBox);
+		sidebar->addWidget(groupBox);
 // ############### end of sidebar menu
     }
-
+/* CREATING FOOTER */
     void footer() {
         WContainerWidget* footer = new WContainerWidget(root());
         footer->setId("footer");
         footer->addWidget(new WText("Developed using C++/Wt"));
     }
-
+/* CREATING CONTENT OF THE HOMEPAGE */
     void home() {
         WText *t = new WText("<strong>Home</strong> content and a link to <a href='#/page1'>page1</a>");
         t->setInternalPathEncoding(true);
         content()->addWidget(t);
-// ################ Best books
-
-
+// ################ TABLE OF TOP BEST BOOKS ##################
 	WTable *table = new WTable();
-	table->setWidth(Wt::WLength("100%"));
-	table->setHeaderCount(1);
+		table->setWidth(Wt::WLength("100%"));
+		table->setHeaderCount(1);
 
-	table->elementAt(0, 0)->addWidget(new WText("#"));
-	table->elementAt(0, 1)->addWidget(new WText("Book"));
-	table->elementAt(0, 2)->addWidget(new WText("Author"));
-	table->elementAt(0, 3)->addWidget(new WText("Mark"));
+		table->elementAt(0, 0)->addWidget(new WText("#"));
+		table->elementAt(0, 1)->addWidget(new WText("Book"));
+		table->elementAt(0, 2)->addWidget(new WText("Author"));
+		table->elementAt(0, 3)->addWidget(new WText("Mark"));
 	
 
 	Dbo::Transaction transaction(session);
 	Dbo::ptr<BestBook> joe = session.find<BestBook>().where("name = ?").bind("Joe");
 	transaction.commit();	
 	new WText(joe->password, table->elementAt(1, 0));
-	
-table->addStyleClass("table form-inline");
+		table->addStyleClass("table form-inline");
 
 
 	content()->addWidget(table);	
  }
-
+/* CREATING NEW PAGE */
     void page1() {
         content()->addWidget(new WText("<strong>Home</strong> content and a link to "));
         WAnchor* a = new WAnchor(WLink(WLink::InternalPath, "/"), "home", content());
     }
 
 };
-
+/* GRAPH SKIN */
 WApplication* createApplication(const WEnvironment &env) {
 	WApplication* tmp = new ControlExample(env);
 	tmp->styleSheet().addRule("#header", "background-color: #262626; color: #fff; padding: 0.1em 0.5em;");
